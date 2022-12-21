@@ -1,4 +1,4 @@
 @echo off
 cd /d %~dp0
-node FairDraw.js
+.\FairDraw.exe
 pause

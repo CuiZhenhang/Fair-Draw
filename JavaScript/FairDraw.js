@@ -17,7 +17,7 @@ limitations under the License.
 /**
  * @name 公平抽奖助手
  * @author CuiZhenhang
- * @version 1.2
+ * @version 1.3
  * @see https://github.com/CuiZhenhang/Fair-Draw
  */
 
@@ -201,6 +201,7 @@ function main () {
         input: stdin,
         output: stdout
     })
+    io.write("欢迎使用 Fair Draw，当前版本 1.3，开源链接：https://github.com/CuiZhenhang/Fair-Draw。\n")
     io.write("操作模式有：\n1. 生成字符串；\n2. 生成随机排名；\n3. 检验哈希值。\n")
     io.question("请输入操作模式前的数字：", (answer) => {
         let code = Number(answer)
@@ -222,7 +223,8 @@ function main () {
                     text = text.trim()
                     if (text.length < 1) throw new Error("参数字符串应当非空")
                     io.question("请输入参数列表：", (textParams) => {
-                        let params = textParams.trim().split(/\s+/).map((value) => Number(value))
+                        textParams = textParams.trim()
+                        let params = textParams.length ? textParams.split(/\s+/).map((value) => Number(value)) : []
                         if (params.some((value) => value < 0 || !Number.isFinite(value))) throw new Error("参数列表不合法")
                         io.question("请输入最大排名：", (textTotal) => {
                             let total = Math.floor(Number(textTotal))
