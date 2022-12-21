@@ -17,7 +17,7 @@ limitations under the License.
 /**
  * @name 公平抽奖助手
  * @author CuiZhenhang
- * @version 1.3
+ * @version 1.3.1
  * @see https://github.com/CuiZhenhang/Fair-Draw
  * 编译命令：`g++ .\FairDraw.cpp .\md5.cpp -std=c++14 -fexec-charset=GBK -o FairDraw`
  */
@@ -119,7 +119,7 @@ inline int readline (std::vector<T> &array, const char query[] = nullptr) {
 int main () {
 	using std::cout;
 	using std::endl;
-	cout << "欢迎使用 Fair Draw，当前版本 1.3，开源链接：https://github.com/CuiZhenhang/Fair-Draw。" << endl;
+	cout << "欢迎使用 Fair Draw，当前版本 1.3.1，开源链接：https://github.com/CuiZhenhang/Fair-Draw。" << endl;
 	cout << "操作模式有：\n1. 生成字符串；\n2. 生成随机排名；\n3. 检验哈希值。" << endl;
 	uint32_t code;
 	readline(code, "请输入操作模式前的数字：");
@@ -322,10 +322,15 @@ namespace FairDraw {
 			need[value] = true;
 			if (value > maxNth) maxNth = value;
 		}
-		if (need[0]) need[0] = seed % total + 1;
+		if (need.count(0)) need[0] = seed % total + 1;
+		auto it = need.begin(), end = need.end();
+		if (it != end && it->first == 0) ++it;
 		for (uint64_t times = 0; times < maxNth; ++times) {
 			seed = nextRandomInt64(seed);
-			if (need[times + 1]) need[times + 1] = seed % total + 1;
+			if (it != end && it->first == times + 1) {
+				it->second = seed % total + 1;
+				++it;
+			}
 		}
 		std::vector<uint64_t> result;
 		result.reserve(nth.size());
